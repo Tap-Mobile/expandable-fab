@@ -13,11 +13,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.ImageViewCompat
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
@@ -272,9 +272,16 @@ class FabOption : FloatingActionButton {
                         label.translationXPx
                     )
 
-//                    val iconResourceId = getResourceId(R.styleable.FabOption_fab_icon, 0)
+                    val iconResourceId = getResourceId(R.styleable.FabOption_fab_icon, 0)
 //                    setCompoundDrawablesWithIntrinsicBounds(iconResourceId, 0, 0, 0)
-//                    compoundDrawablePadding = 100
+//                    compoundDrawablePadding = 0
+
+                    backgroundTintList = ContextCompat.getColorStateList(context, R.color.color_fab_option)
+                    isAllCaps = false
+
+                    iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
+                    iconPadding = 24
+                    setIconResource(iconResourceId)
                 }
             } catch (e: Exception) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties), e)
@@ -441,7 +448,8 @@ class FabOption : FloatingActionButton {
         globalLabelDurationMs: Long?
     ): Animator {
         this.alpha = 0f
-        this.visibility = View.VISIBLE
+//        this.visibility = View.VISIBLE
+        this.visibility = View.INVISIBLE
         this.size = size.value
 
         val (firstMarginPx, successiveMarginPx) = when (position) {

@@ -460,7 +460,7 @@ class ExpandableFabLayout : CoordinatorLayout {
             (label.layoutParams as LayoutParams).let {
                 it.anchorId = fabOption.id
                 it.width = ViewGroup.LayoutParams.MATCH_PARENT
-                val marginHorizontal = 13
+                val marginHorizontal = 16
                 it.marginStart = marginHorizontal
                 it.marginEnd = marginHorizontal
                 label.layoutParams = it

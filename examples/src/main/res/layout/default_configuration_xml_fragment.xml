@@ -41,7 +41,7 @@
             app:efab_orientation="portrait"
             app:efab_size="custom"
             app:efab_iconAnimationRotationDeg="-45"
-            app:efab_successiveFabOptionMarginPx="125"
+            app:efab_successiveFabOptionMarginPx="95"
             app:fabCustomSize="72dp"
             app:maxImageSize="42dp" />
 

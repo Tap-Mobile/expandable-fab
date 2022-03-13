@@ -13,10 +13,10 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.OvershootInterpolator
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import com.google.android.material.button.MaterialButton
 
 /**
  * A label of text attached to a view of the ExpandableFab widget.
@@ -37,7 +37,9 @@ import androidx.core.view.ViewCompat
  *
  * @since 1.0.0
  * */
-class Label : AppCompatTextView {
+//class Label : AppCompatTextView {
+class Label : MaterialButton {
+
     /**
      * The text of the Label. Can be set to null to hide the label. Usage of this property is
      * preferred over the inherited set/getText methods.
@@ -269,14 +271,14 @@ class Label : AppCompatTextView {
         visibility = View.GONE
 
         val backgroundDrawable = GradientDrawable().apply {
-            setColor(ContextCompat.getColor(context, R.color.efab_label_background))
-            cornerRadius = resources.getDimension(R.dimen.efab_ui_margin_xxs)
+            setColor(ContextCompat.getColor(context, R.color.color_fab_option))
+            cornerRadius = resources.getDimension(R.dimen.efab_ui_corner_radius)
         }
 
         setPadding(
-            resources.getDimension(R.dimen.efab_ui_margin_xs).toInt(),
+            resources.getDimension(R.dimen.efab_ui_margin_horizontal).toInt(),
             resources.getDimension(R.dimen.efab_ui_margin_vertical).toInt(),
-            resources.getDimension(R.dimen.efab_ui_margin_xs).toInt(),
+            resources.getDimension(R.dimen.efab_ui_margin_horizontal).toInt(),
             resources.getDimension(R.dimen.efab_ui_margin_vertical).toInt()
         )
 
