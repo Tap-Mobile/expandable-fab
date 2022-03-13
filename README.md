@@ -10,6 +10,8 @@ A highly customizable Android widget that displays the available actions of a UI
 
 Designed to be screen orientation aware, so it can display different elements from portrait to landscape.
 
+Custom FAB Preview
+![custom_fab_preview](https://github.com/Tap-Mobile/expandable-fab/blob/custom/docs/gallery/custom_fab_preview.jpg)
 
 ## Examples
 A working Android app filled with some common use cases and customizations of the ExpandableFab widget can be found and built under [examples](/examples). Below are a few gifs of the widget in use (this isn't an exhaustive list - the ExpandableFab can do so much more!).
