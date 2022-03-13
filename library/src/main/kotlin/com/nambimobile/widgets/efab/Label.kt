@@ -37,7 +37,6 @@ import com.google.android.material.button.MaterialButton
  *
  * @since 1.0.0
  * */
-//class Label : AppCompatTextView {
 class Label : MaterialButton {
 
     /**

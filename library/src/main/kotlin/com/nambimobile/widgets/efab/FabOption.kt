@@ -40,8 +40,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  *
  * @since 1.0.0
  * */
-//class FabOption : FloatingActionButton {
-//class FabOption : AppCompatImageView {
 class FabOption : FloatingActionButton {
 
     /** The [Orientation] this FabOption is viewable in. Default value is [Orientation.PORTRAIT]. **/
