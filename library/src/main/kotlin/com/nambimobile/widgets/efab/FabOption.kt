@@ -9,9 +9,11 @@ import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
@@ -38,6 +40,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  *
  * @since 1.0.0
  * */
+//class FabOption : FloatingActionButton {
+//class FabOption : AppCompatImageView {
 class FabOption : FloatingActionButton {
 
     /** The [Orientation] this FabOption is viewable in. Default value is [Orientation.PORTRAIT]. **/
@@ -57,7 +61,7 @@ class FabOption : FloatingActionButton {
      * backgroundTintList methods.
      * */
     var fabOptionColor = getThemeColorAccent(context)
-        set(value){
+        set(value) {
             this.backgroundTintList = ColorStateList.valueOf(value)
             field = value
         }
@@ -86,7 +90,7 @@ class FabOption : FloatingActionButton {
      * */
     var fabOptionEnabled = true
         set(value) {
-            if(value){
+            if (value) {
                 // didn't overwrite this value, so just assign them again and we're good to go
                 fabOptionColor = fabOptionColor
             } else {
@@ -106,7 +110,7 @@ class FabOption : FloatingActionButton {
      * */
     var openingAnimationDurationMs = 125L
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_faboption_illegal_optional_properties))
             }
 
@@ -120,7 +124,7 @@ class FabOption : FloatingActionButton {
      * */
     var closingAnimationDurationMs = 75L
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_faboption_illegal_optional_properties))
             }
 
@@ -136,7 +140,7 @@ class FabOption : FloatingActionButton {
      * */
     var openingOvershootTension = 3.5f
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_faboption_illegal_optional_properties))
             }
 
@@ -173,6 +177,7 @@ class FabOption : FloatingActionButton {
         visibleToHiddenAnimationDurationMs = 75L
         hiddenToVisibleAnimationDurationMs = 250L
         overshootTension = 3.5f
+        gravity = Gravity.CENTER
     }
 
     /** Default onClick functionality. Set by the parent layout. Not to be used by clients. **/
@@ -180,7 +185,7 @@ class FabOption : FloatingActionButton {
     @set:JvmSynthetic
     internal var defaultOnClickBehavior: (() -> Boolean)? = null
         get() {
-            if(field == null){
+            if (field == null) {
                 illegalState(resources.getString(R.string.efab_layout_must_be_child_of_expandablefab_layout))
             }
 
@@ -189,7 +194,7 @@ class FabOption : FloatingActionButton {
         set // Redundant declaration, but must be defined for JvmSynthetic to hide from Java clients
 
     // Declared as a property so we don't create a new one each animation... slight waste reduction?
-    private val hideOnAnimationEnd = object : AnimatorListenerAdapter(){
+    private val hideOnAnimationEnd = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             this@FabOption.visibility = View.GONE
         }
@@ -209,7 +214,7 @@ class FabOption : FloatingActionButton {
      * Please review the Notes documented at the top of the class for guidelines and limitations
      * when using FabOption.
      * */
-    constructor(context: Context, orientation: Orientation? = Orientation.PORTRAIT): super(context){
+    constructor(context: Context, orientation: Orientation? = Orientation.PORTRAIT) : super(context) {
         setOptionalProperties(orientation = orientation ?: this.orientation)
     }
 
@@ -217,7 +222,7 @@ class FabOption : FloatingActionButton {
      * Called by the system when creating a FabOption via XML (don't call this directly).
      * To create a FabOption programmatically, use the FabOption(context, orientation) constructor.
      * */
-    constructor(context: Context, attributeSet: AttributeSet): super(context, attributeSet){
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
         // parsing properties of the FabOption's Label set via XML
         context.theme.obtainStyledAttributes(attributeSet, R.styleable.FabOption, 0, 0).apply {
             try {
@@ -240,11 +245,12 @@ class FabOption : FloatingActionButton {
                         label.labelTextSize
                     )
                     val fontResourceId = getResourceId(R.styleable.FabOption_label_font, 0)
-                    labelFont = if(fontResourceId == 0){
+                    labelFont = if (fontResourceId == 0) {
                         label.labelFont
                     } else {
                         ResourcesCompat.getFont(context, fontResourceId)
                     }
+                    setTypeface(typeface, Typeface.BOLD)
                     labelBackgroundColor = getColor(
                         R.styleable.FabOption_label_backgroundColor,
                         label.labelBackgroundColor
@@ -265,8 +271,12 @@ class FabOption : FloatingActionButton {
                         R.styleable.FabOption_label_translationXPx,
                         label.translationXPx
                     )
+
+//                    val iconResourceId = getResourceId(R.styleable.FabOption_fab_icon, 0)
+//                    setCompoundDrawablesWithIntrinsicBounds(iconResourceId, 0, 0, 0)
+//                    compoundDrawablePadding = 100
                 }
-            }  catch (e: Exception) {
+            } catch (e: Exception) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties), e)
             } finally {
                 recycle()
@@ -288,7 +298,7 @@ class FabOption : FloatingActionButton {
                 // backwards-compatible way. Calling [getDrawable] directly may result in a crash
                 // on some devices, in certain scenarios.
                 val iconResourceId = getResourceId(R.styleable.FabOption_fab_icon, 0)
-                val icon = if(iconResourceId == 0){
+                val icon = if (iconResourceId == 0) {
                     null
                 } else {
                     AppCompatResources.getDrawable(context, iconResourceId)
@@ -301,8 +311,10 @@ class FabOption : FloatingActionButton {
                     fabOptionEnabled = getBoolean(R.styleable.FabOption_fab_enabled, true),
                     openingAnimationDurationMs = openingDuration,
                     closingAnimationDurationMs = closingDuration,
-                    openingOvershootTension = getFloat(R.styleable.FabOption_fab_openingOvershootTension,
-                        openingOvershootTension)
+                    openingOvershootTension = getFloat(
+                        R.styleable.FabOption_fab_openingOvershootTension,
+                        openingOvershootTension
+                    )
                 )
             } catch (e: Exception) {
                 illegalArg(resources.getString(R.string.efab_faboption_illegal_optional_properties), e)
@@ -313,7 +325,7 @@ class FabOption : FloatingActionButton {
     }
 
     init {
-        if (id == View.NO_ID){
+        if (id == View.NO_ID) {
             id = ViewCompat.generateViewId()
         }
 
@@ -339,7 +351,7 @@ class FabOption : FloatingActionButton {
         super.setOnClickListener {
             val canCallCustomListener = defaultOnClickBehavior?.invoke()
 
-            if(canCallCustomListener ?: false){
+            if (canCallCustomListener ?: false) {
                 onClickListener?.onClick(it)
             }
         }
@@ -354,7 +366,7 @@ class FabOption : FloatingActionButton {
      * Clients should never need to call this directly. Instead, set [ExpandableFab.fabOptionSize].
      * */
     override fun setSize(size: Int) {
-        if(size != FabSize.CUSTOM.value){
+        if (size != FabSize.CUSTOM.value) {
             super.setSize(size)
         }
     }
@@ -377,7 +389,7 @@ class FabOption : FloatingActionButton {
         openingAnimationDurationMs: Long = this.openingAnimationDurationMs,
         closingAnimationDurationMs: Long = this.closingAnimationDurationMs,
         openingOvershootTension: Float = this.openingOvershootTension
-    ){
+    ) {
         this.orientation = orientation
         this.fabOptionColor = fabOptionColor
         fabOptionIcon?.let { this.fabOptionIcon = it }
@@ -386,7 +398,7 @@ class FabOption : FloatingActionButton {
         this.closingAnimationDurationMs = closingAnimationDurationMs
         this.openingOvershootTension = openingOvershootTension
 
-        if(hasOnClickListeners()){
+        if (hasOnClickListeners()) {
             // If the view has a listener set, it was set via the onClick attribute in XML. However
             // the label was not created at that time, so we mirror the logic on the label now.
             setLabelOnClickListener()
@@ -404,7 +416,7 @@ class FabOption : FloatingActionButton {
     // calls setOnClickListener, where the below function is first called) the label is not yet
     // created. So we need the safe call... on a type that should never be null. Will look more
     // into this later.
-    private fun setLabelOnClickListener() = label?.setOnClickListener { this.callOnClick() }
+    private fun setLabelOnClickListener() = label.setOnClickListener { this.callOnClick() }
 
     /**
      * The set of animations to play when the FabOption is being shown from a hidden state (when
@@ -432,7 +444,7 @@ class FabOption : FloatingActionButton {
         this.visibility = View.VISIBLE
         this.size = size.value
 
-        val (firstMarginPx, successiveMarginPx) = when(position){
+        val (firstMarginPx, successiveMarginPx) = when (position) {
             FabOptionPosition.ABOVE -> Pair(-firstFabOptionMarginPx, -successiveFabOptionMarginPx)
             FabOptionPosition.BELOW -> Pair(firstFabOptionMarginPx, successiveFabOptionMarginPx)
         }

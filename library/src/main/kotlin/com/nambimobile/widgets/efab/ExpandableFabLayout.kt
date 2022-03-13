@@ -28,27 +28,27 @@ import androidx.core.view.ViewCompat
  *
  * ExpandableFab widget Example via XML:
 
-    <com.nambimobile.widgets.efab.ExpandableFabLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<com.nambimobile.widgets.efab.ExpandableFabLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-        <com.nambimobile.widgets.efab.Overlay
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+<com.nambimobile.widgets.efab.Overlay
+android:layout_width="match_parent"
+android:layout_height="match_parent"/>
 
-        <com.nambimobile.widgets.efab.ExpandableFab
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/ui_margin_medium"
-            android:layout_marginEnd="@dimen/ui_margin_medium"
-            android:layout_marginRight="@dimen/ui_margin_medium"/>
+<com.nambimobile.widgets.efab.ExpandableFab
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom|end"
+android:layout_marginBottom="@dimen/ui_margin_medium"
+android:layout_marginEnd="@dimen/ui_margin_medium"
+android:layout_marginRight="@dimen/ui_margin_medium"/>
 
-        <com.nambimobile.widgets.efab.FabOption
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<com.nambimobile.widgets.efab.FabOption
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"/>
 
-    </com.nambimobile.widgets.efab.ExpandableFabLayout>
+</com.nambimobile.widgets.efab.ExpandableFabLayout>
  *
  * Developer Notes:
  * 1) The ExpandableFabLayout should be given a layout_width and layout_height of match_parent,
@@ -214,14 +214,14 @@ class ExpandableFabLayout : CoordinatorLayout {
      * ExpandableFabLayout(context, attributeSet) - it is for use by the Android framework when
      * inflating an ExpandableFabLayout via XML).
      * */
-    constructor(context: Context): super(context)
+    constructor(context: Context) : super(context)
 
     /**
      * Called by the system when creating an ExpandableFabLayout via XML (don't call this directly).
      * To create an ExpandableFabLayout programmatically, use the ExpandableFabLayout(context)
      * constructor.
      * */
-    constructor(context: Context, attributeSet: AttributeSet): super(context, attributeSet){
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
         context.theme.obtainStyledAttributes(attributeSet, R.styleable.ExpandableFabLayout, 0, 0).apply {
             try {
                 this@ExpandableFabLayout.overlayOpeningAnimationDurationMs =
@@ -249,7 +249,7 @@ class ExpandableFabLayout : CoordinatorLayout {
     }
 
     init {
-        if (id == View.NO_ID){
+        if (id == View.NO_ID) {
             id = ViewCompat.generateViewId()
         }
     }
@@ -266,7 +266,7 @@ class ExpandableFabLayout : CoordinatorLayout {
      * ExpandableFabLayout, please know adding other View types may cause visual issues.
      * */
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        when(child){
+        when (child) {
             is Overlay -> addOverlay(child, index, params)
             is ExpandableFab -> addExpandableFab(child, index, params)
             is FabOption -> addFabOption(child, index, params)
@@ -279,8 +279,8 @@ class ExpandableFabLayout : CoordinatorLayout {
      * programmatically. Ensure your children views are of type Overlay, ExpandableFab or FabOption
      * only.
      * */
-    fun addViews(vararg children: View?){
-        for (child in children){
+    fun addViews(vararg children: View?) {
+        for (child in children) {
             addView(child)
         }
     }
@@ -318,11 +318,11 @@ class ExpandableFabLayout : CoordinatorLayout {
      *
      * Safe to call even when no ExpandableFab is open (will do nothing).
      * */
-    fun close(){
-        if(!animationsFinished()){
+    fun close() {
+        if (!animationsFinished()) {
             closeWhenAble = true
             return
-        } else if(!open){
+        } else if (!open) {
             return
         }
 
@@ -358,10 +358,10 @@ class ExpandableFabLayout : CoordinatorLayout {
      * about being given an OrientationConfiguration for an orientation that you did not set.
      * */
     fun getCurrentConfiguration(): OrientationConfiguration {
-        return when(resources.configuration.orientation){
+        return when (resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT ->
-                if(portraitConfiguration.efab != null) portraitConfiguration else landscapeConfiguration
-            else -> if(landscapeConfiguration.efab != null) landscapeConfiguration else portraitConfiguration
+                if (portraitConfiguration.efab != null) portraitConfiguration else landscapeConfiguration
+            else -> if (landscapeConfiguration.efab != null) landscapeConfiguration else portraitConfiguration
         }
     }
 
@@ -371,11 +371,11 @@ class ExpandableFabLayout : CoordinatorLayout {
         child: View?,
         index: Int,
         params: ViewGroup.LayoutParams?
-    ){
+    ) {
         super.addView(child, index, params)
         val overlay = (child as Overlay).also { it.defaultOnClickBehavior = ::defaultOverlayOnClickBehavior }
 
-        when(overlay.orientation){
+        when (overlay.orientation) {
             Orientation.PORTRAIT -> portraitConfiguration.overlay = overlay
             Orientation.LANDSCAPE -> landscapeConfiguration.overlay = overlay
         }
@@ -385,7 +385,7 @@ class ExpandableFabLayout : CoordinatorLayout {
         child: View?,
         index: Int,
         params: ViewGroup.LayoutParams?
-    ){
+    ) {
         super.addView(child, index, params)
         val efab = (child as ExpandableFab).also {
             it.defaultOnClickBehavior = ::defaultExpandableFabOnClickBehavior
@@ -404,9 +404,9 @@ class ExpandableFabLayout : CoordinatorLayout {
             label.showLabel()
         }
 
-        when(efab.orientation){
+        when (efab.orientation) {
             Orientation.PORTRAIT -> {
-                if(portraitConfiguration.efab != null){
+                if (portraitConfiguration.efab != null) {
                     illegalState(resources.getString(R.string.efab_layout_multiple_efabs, efab.orientation))
                 }
 
@@ -415,15 +415,15 @@ class ExpandableFabLayout : CoordinatorLayout {
 
                 // This portrait efab will show if we're in portrait orientation OR if we're in
                 // landscape, but no landscape efab has been set.
-                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     landscapeConfiguration.efab?.hide()
-                } else if(landscapeConfiguration.efab != null) {
+                } else if (landscapeConfiguration.efab != null) {
                     efab.hide()
                 }
             }
 
             Orientation.LANDSCAPE -> {
-                if(landscapeConfiguration.efab != null){
+                if (landscapeConfiguration.efab != null) {
                     illegalState(resources.getString(R.string.efab_layout_multiple_efabs, efab.orientation))
                 }
 
@@ -432,9 +432,9 @@ class ExpandableFabLayout : CoordinatorLayout {
 
                 // This landscape efab will show if we're in landscape orientation OR if we're in
                 // portrait, but no portrait efab has been set.
-                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     portraitConfiguration.efab?.hide()
-                } else if(portraitConfiguration.efab != null) {
+                } else if (portraitConfiguration.efab != null) {
                     efab.hide()
                 }
             }
@@ -445,10 +445,10 @@ class ExpandableFabLayout : CoordinatorLayout {
         child: View?,
         index: Int,
         params: ViewGroup.LayoutParams?
-    ){
+    ) {
         super.addView(child, index, params)
         val fabOption = (child as FabOption).also { it.defaultOnClickBehavior = ::defaultFabOptionOnClickBehavior }
-        val configuration = when(fabOption.orientation){
+        val configuration = when (fabOption.orientation) {
             Orientation.PORTRAIT -> portraitConfiguration
             Orientation.LANDSCAPE -> landscapeConfiguration
         }
@@ -459,6 +459,10 @@ class ExpandableFabLayout : CoordinatorLayout {
 
             (label.layoutParams as LayoutParams).let {
                 it.anchorId = fabOption.id
+                it.width = ViewGroup.LayoutParams.MATCH_PARENT
+                val marginHorizontal = 13
+                it.marginStart = marginHorizontal
+                it.marginEnd = marginHorizontal
                 label.layoutParams = it
             }
         }
@@ -471,8 +475,8 @@ class ExpandableFabLayout : CoordinatorLayout {
         close()
     }
 
-    private fun defaultExpandableFabOnClickBehavior(){
-        if(open || !animationsFinished()){
+    private fun defaultExpandableFabOnClickBehavior() {
+        if (open || !animationsFinished()) {
             close()
         } else {
             open()
@@ -484,7 +488,7 @@ class ExpandableFabLayout : CoordinatorLayout {
      * FabOption has been clicked during the currently playing opening/closing animations).
      * */
     private fun defaultFabOptionOnClickBehavior(): Boolean {
-        return if(fabOptionAlreadyClicked){
+        return if (fabOptionAlreadyClicked) {
             false
         } else {
             fabOptionAlreadyClicked = true
@@ -494,8 +498,8 @@ class ExpandableFabLayout : CoordinatorLayout {
         }
     }
 
-    private fun open(){
-        if(open){
+    private fun open() {
+        if (open) {
             return
         }
 
@@ -521,11 +525,12 @@ class ExpandableFabLayout : CoordinatorLayout {
         return AnimatorSet().apply {
             playTogether(
                 configuration.overlay?.openingAnimations(
-                    globalDurationMs = overlayOpeningAnimationDurationMs) ?: AnimatorSet(),
+                    globalDurationMs = overlayOpeningAnimationDurationMs
+                ) ?: AnimatorSet(),
                 efab.openingAnimations(
                     globalDurationMs = expandableFabOpeningAnimationDurationMs,
                     globalLabelDurationMs = labelVisibleToHiddenAnimationDurationMs
-                ){
+                ) {
                     efabAnimationsFinished = true
                     setState(true)
                 },
@@ -548,11 +553,12 @@ class ExpandableFabLayout : CoordinatorLayout {
         return AnimatorSet().apply {
             playTogether(
                 configuration.overlay?.closingAnimations(
-                    globalDurationMs = overlayClosingAnimationDurationMs) ?: AnimatorSet(),
+                    globalDurationMs = overlayClosingAnimationDurationMs
+                ) ?: AnimatorSet(),
                 efab.closingAnimations(
                     globalDurationMs = expandableFabClosingAnimationDurationMs,
                     globalLabelDurationMs = labelHiddenToVisibleAnimationDurationMs
-                ){
+                ) {
                     efabAnimationsFinished = true
                     setState(false)
                 },
@@ -595,12 +601,12 @@ class ExpandableFabLayout : CoordinatorLayout {
      * words, only the call from the longer (duration wise) of the two animations will actually
      * trigger the state to change. So seeing this called twice per call to open/close is expected.
      * */
-    private fun setState(opened: Boolean){
-        if(animationsFinished()){
-            if(opened){
+    private fun setState(opened: Boolean) {
+        if (animationsFinished()) {
+            if (opened) {
                 open = true
 
-                if(closeWhenAble){
+                if (closeWhenAble) {
                     close()
                 }
             } else {
@@ -611,7 +617,7 @@ class ExpandableFabLayout : CoordinatorLayout {
         }
     }
 
-    private var setStateAsOpened = object : AnimatorListenerAdapter(){
+    private var setStateAsOpened = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             groupAnimationsFinished = true
 
@@ -619,7 +625,7 @@ class ExpandableFabLayout : CoordinatorLayout {
         }
     }
 
-    private var setStateAsClosed = object : AnimatorListenerAdapter(){
+    private var setStateAsClosed = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             groupAnimationsFinished = true
 

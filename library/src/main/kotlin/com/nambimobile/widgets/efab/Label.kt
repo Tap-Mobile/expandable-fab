@@ -44,7 +44,7 @@ class Label : AppCompatTextView {
      * */
     var labelText: CharSequence? = null
         set(value) {
-            if(value == null){
+            if (value == null) {
                 visibility = View.GONE
             }
 
@@ -84,7 +84,7 @@ class Label : AppCompatTextView {
      * using: ResourcesCompat.getFont(context, R.font.name_of_font). Usage of this property is
      * preferred over the inherited set/getTypeface methods.
      * */
-    var labelFont = Typeface.DEFAULT
+    var labelFont: Typeface? = Typeface.DEFAULT
         set(value) {
             typeface = value
             field = value
@@ -101,7 +101,7 @@ class Label : AppCompatTextView {
     var labelBackgroundColor = ContextCompat.getColor(context, R.color.efab_label_background)
         set(value) {
             background.let {
-                when(it){
+                when (it) {
                     is GradientDrawable -> it.setColor(value)
                     else -> it.setColorFilter(value, PorterDuff.Mode.SRC_ATOP)
                 }
@@ -118,7 +118,7 @@ class Label : AppCompatTextView {
      * */
     var labelElevation = resources.getDimensionPixelSize(R.dimen.efab_label_elevation)
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties))
             }
 
@@ -137,7 +137,7 @@ class Label : AppCompatTextView {
     @set:JvmSynthetic
     internal var labelEnabled = true
         set(value) {
-            if(value){
+            if (value) {
                 // didn't overwrite these values, so just assign them again and we're good to go
                 labelBackgroundColor = labelBackgroundColor
                 labelTextColor = labelTextColor
@@ -166,7 +166,7 @@ class Label : AppCompatTextView {
      * */
     var marginPx = 50f
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties))
             }
 
@@ -187,7 +187,7 @@ class Label : AppCompatTextView {
      * */
     var visibleToHiddenAnimationDurationMs = 250L
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties))
             }
 
@@ -200,7 +200,7 @@ class Label : AppCompatTextView {
      * */
     var hiddenToVisibleAnimationDurationMs = 75L
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties))
             }
 
@@ -217,7 +217,7 @@ class Label : AppCompatTextView {
      * */
     var overshootTension = 3.5f
         set(value) {
-            if (value < 0){
+            if (value < 0) {
                 illegalArg(resources.getString(R.string.efab_label_illegal_optional_properties))
             }
 
@@ -225,7 +225,7 @@ class Label : AppCompatTextView {
         }
 
     // Declared as a property so we don't create a new one each animation... slight waste reduction?
-    private val hideOnAnimationEnd = object : AnimatorListenerAdapter(){
+    private val hideOnAnimationEnd = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             this@Label.visibility = View.GONE
         }
@@ -237,7 +237,7 @@ class Label : AppCompatTextView {
      * all labeled Views of the ExpandableFab widget already create their own labels which can
      * be retrieved and modified (but not reassigned) as needed.
      * */
-    constructor(context: Context): super(context){
+    constructor(context: Context) : super(context) {
         // Kotlin does not use the declared custom setter of properties when setting their default
         // values. This is unfortunate, as our custom setters have logic that need to be executed
         // when the property is set. So these assignments, though seemingly redundant, ensure
@@ -262,7 +262,7 @@ class Label : AppCompatTextView {
      * already create their own labels which can be retrieved and modified (but not reassigned)
      * as needed.
      * */
-    private constructor(context: Context, attributeSet: AttributeSet): super(context, attributeSet)
+    private constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
 
     init {
         id = ViewCompat.generateViewId()
@@ -275,9 +275,9 @@ class Label : AppCompatTextView {
 
         setPadding(
             resources.getDimension(R.dimen.efab_ui_margin_xs).toInt(),
-            resources.getDimension(R.dimen.efab_ui_margin_xxs).toInt(),
+            resources.getDimension(R.dimen.efab_ui_margin_vertical).toInt(),
             resources.getDimension(R.dimen.efab_ui_margin_xs).toInt(),
-            resources.getDimension(R.dimen.efab_ui_margin_xxs).toInt()
+            resources.getDimension(R.dimen.efab_ui_margin_vertical).toInt()
         )
 
         ViewCompat.setBackground(this, backgroundDrawable)
@@ -290,7 +290,7 @@ class Label : AppCompatTextView {
      * feedback to show that the Label was pressed.
      * */
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when(event?.action){
+        when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 scaleX = 0.925f
                 scaleY = 0.925f
@@ -319,7 +319,7 @@ class Label : AppCompatTextView {
      * */
     @JvmSynthetic
     internal fun hiddenToVisibleAnimations(globalDurationMs: Long?): Animator {
-        if(labelText == null){
+        if (labelText == null) {
             return AnimatorSet()
         }
 
@@ -328,13 +328,15 @@ class Label : AppCompatTextView {
         alpha = 0f
         visibility = View.VISIBLE
 
-        val startTranslation = when(position){
+        val startTranslation = when (position) {
             LabelPosition.LEFT -> -marginPx + translationXPx
             LabelPosition.RIGHT -> marginPx + translationXPx
+            LabelPosition.CENTER -> translationXPx
         }
-        val endTranslation =  when(position){
+        val endTranslation = when (position) {
             LabelPosition.LEFT -> -marginPx
             LabelPosition.RIGHT -> marginPx
+            LabelPosition.CENTER -> 0f
         }
 
         return AnimatorSet().apply {
@@ -361,7 +363,7 @@ class Label : AppCompatTextView {
      * */
     @JvmSynthetic
     internal fun visibleToHiddenAnimations(globalDurationMs: Long?): Animator {
-        if(labelText == null){
+        if (labelText == null) {
             return AnimatorSet()
         }
 
@@ -382,9 +384,9 @@ class Label : AppCompatTextView {
         }
     }
 
-    private fun positionSelf(){
+    private fun positionSelf() {
         (layoutParams as CoordinatorLayout.LayoutParams).let {
-            if(it.anchorId != View.NO_ID){
+            if (it.anchorId != View.NO_ID) {
                 it.anchorGravity = position.value
                 it.gravity = position.value
                 layoutParams = it
@@ -393,21 +395,22 @@ class Label : AppCompatTextView {
     }
 
     @JvmSynthetic
-    internal fun showLabel(){
-        if(labelText != null){
+    internal fun showLabel() {
+        if (labelText != null) {
             positionSelf()
 
             visibility = View.VISIBLE
 
-            when(position){
-                LabelPosition.LEFT -> translationX = -marginPx
-                LabelPosition.RIGHT -> translationX = marginPx
+            translationX = when (position) {
+                LabelPosition.LEFT -> -marginPx
+                LabelPosition.RIGHT -> marginPx
+                LabelPosition.CENTER -> 0f
             }
         }
     }
 
     @JvmSynthetic
-    internal fun hideLabel(){
+    internal fun hideLabel() {
         visibility = View.GONE
     }
 }

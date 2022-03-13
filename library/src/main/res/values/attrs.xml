@@ -44,7 +44,8 @@
     <!-- The Label's [LabelPosition], in relation to the view it's attached to. -->
     <attr name="label_position" format="enum">
         <enum name="left" value="0" />
-        <enum name="right" value="1" />
+        <enum name="center" value="1" />
+        <enum name="right" value="2" />
     </attr>
 
     <!--

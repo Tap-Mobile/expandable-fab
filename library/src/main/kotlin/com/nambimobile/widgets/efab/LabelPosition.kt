@@ -1,6 +1,7 @@
 package com.nambimobile.widgets.efab
 
 import android.view.Gravity
+import com.nambimobile.widgets.efab.LabelPosition.LEFT
 
 /**
  * The legal positions of Labels, in relation to the view they're attached to.
@@ -10,5 +11,6 @@ import android.view.Gravity
  * */
 enum class LabelPosition(val value: Int) {
     LEFT(Gravity.START.or(Gravity.CENTER_VERTICAL)),
+    CENTER(Gravity.CENTER.or(Gravity.CENTER_VERTICAL)),
     RIGHT(Gravity.END.or(Gravity.CENTER_VERTICAL))
 }
