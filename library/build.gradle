@@ -9,7 +9,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode versionMajor * 100000 + versionMinor * 100 + versionPatch * 1
         versionName "$versionMajor.$versionMinor.$versionPatch"

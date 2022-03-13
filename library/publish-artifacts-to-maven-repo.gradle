@@ -94,16 +94,16 @@ afterEvaluate {
                 artifact generateSourcesJar
 
                 // Repo to publish signed artifacts to. Credentials stored in global gradle.properties
-                repositories {
-                    maven {
-                        name = "Sonatype OSSRH (Nexus)"
-                        url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-                        credentials {
-                            username = ossrhUsername
-                            password = ossrhPassword
-                        }
-                    }
-                }
+//                repositories {
+//                    maven {
+//                        name = "Sonatype OSSRH (Nexus)"
+//                        url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+//                        credentials {
+//                            username = ossrhUsername
+//                            password = ossrhPassword
+//                        }
+//                    }
+//                }
 
                 // Metadata required by Maven Central for hosting. Stored in gradle.properties.
                 // https://central.sonatype.org/pages/requirements.html#sufficient-metadata
